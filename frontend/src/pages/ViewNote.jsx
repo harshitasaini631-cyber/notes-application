@@ -1,6 +1,8 @@
+
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { imgSrc } from "./imgSrc";
+import { API_URL } from "../api";
 
 function ViewNote() {
     const { id } = useParams();
@@ -11,7 +13,7 @@ function ViewNote() {
         const getNote = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await fetch(`/notes/read/${id}`, {
+                const response = await fetch(`${API_URL}/notes/read/${id}`, {
                     headers: { "Authorization": token }
                 });
                 const data = await response.json();

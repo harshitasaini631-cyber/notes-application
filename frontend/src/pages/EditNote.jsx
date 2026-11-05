@@ -1,6 +1,8 @@
+
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { imgSrc } from "./imgSrc";
+import { API_URL } from "../api";
 
 function EditNote() {
     const { id } = useParams();
@@ -17,12 +19,11 @@ function EditNote() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    // Left panel: all notes
     useEffect(() => {
         const getNotes = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await fetch("/notes/read", {
+                const response = await fetch(`${API_URL}/notes/read`, {
                     headers: { "Authorization": token }
                 });
                 const data = await response.json();
@@ -34,7 +35,6 @@ function EditNote() {
         getNotes();
     }, []);
 
-    // Right panel
     useEffect(() => {
         const getNote = async () => {
             setLoading(true);
@@ -44,7 +44,7 @@ function EditNote() {
             setRemoveExisting(false);
             try {
                 const token = localStorage.getItem("token");
-                const response = await fetch(`/notes/read/${id}`, {
+                const response = await fetch(`${API_URL}/notes/read/${id}`, {
                     headers: { "Authorization": token }
                 });
                 const data = await response.json();
@@ -106,7 +106,7 @@ function EditNote() {
             if (newImage) formData.append("image", newImage);
             if (removeExisting && !newImage) formData.append("removeImage", "true");
 
-            const response = await fetch(`/notes/update/${id}`, {
+            const response = await fetch(`${API_URL}/notes/update/${id}`, {
                 method: "PUT",
                 headers: { "Authorization": token },
                 body: formData
@@ -127,7 +127,6 @@ function EditNote() {
     return (
         <div className="page page-create">
             <div className="create-layout">
-                {/* Left: all notes (current one highlighted) */}
                 <aside className="pane">
                     <div className="pane-head">
                         <span>Your notes</span>
@@ -152,7 +151,6 @@ function EditNote() {
                     </div>
                 </aside>
 
-                {/* Right: the note being edited */}
                 <section className="pane editor-pane">
                     <div className="pane-head">
                         <span>Edit note</span>

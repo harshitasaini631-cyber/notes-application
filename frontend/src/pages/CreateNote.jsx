@@ -1,5 +1,7 @@
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { API_URL } from "../api";
 
 function CreateNote() {
     const [title, setTitle] = useState("");
@@ -11,11 +13,10 @@ function CreateNote() {
 
     const navigate = useNavigate();
 
-    // Existing notes for the left panel
     const getNotes = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch("/notes/read", {
+            const response = await fetch(`${API_URL}/notes/read`, {
                 method: "GET",
                 headers: { "Authorization": token }
             });
@@ -66,7 +67,7 @@ function CreateNote() {
             formData.append("description", description);
             if (image) formData.append("image", image);
 
-            const response = await fetch("/notes/create", {
+            const response = await fetch(`${API_URL}/notes/create`, {
                 method: "POST",
                 headers: { "Authorization": token },
                 body: formData
@@ -87,7 +88,6 @@ function CreateNote() {
     return (
         <div className="page page-create">
             <div className="create-layout">
-                {/* Left: notes that already exist */}
                 <aside className="pane">
                     <div className="pane-head">
                         <span>Your notes</span>
@@ -111,7 +111,6 @@ function CreateNote() {
                     </div>
                 </aside>
 
-                {/* Right: the note being created */}
                 <section className="pane editor-pane">
                     <div className="pane-head">
                         <span>New note</span>

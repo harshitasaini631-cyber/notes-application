@@ -1,6 +1,8 @@
+
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { imgSrc } from "./imgSrc";
+import { API_URL } from "../api";
 
 function Dashboard() {
     const [notes, setNotes] = useState([]);
@@ -12,7 +14,7 @@ function Dashboard() {
         try {
             const token = localStorage.getItem("token");
 
-            const response = await fetch("/notes/read", {
+            const response = await fetch(`${API_URL}/notes/read`, {
                 method: "GET",
                 headers: {
                     "Authorization": token
@@ -36,7 +38,7 @@ function Dashboard() {
         try {
             const token = localStorage.getItem("token");
 
-            await fetch(`/notes/delete/${id}`, {
+            await fetch(`${API_URL}/notes/delete/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": token
@@ -53,7 +55,6 @@ function Dashboard() {
         getNotes();
     }, []);
 
-    
     const list = Array.isArray(notes) ? notes : [];
 
     return (
